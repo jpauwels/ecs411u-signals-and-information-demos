@@ -88,15 +88,24 @@ class Fourier {
         }
     }
 
-    dBSpectrum(realSamples) {
+    powerSpectrum(realSamples) {
         const real = Array.from(realSamples).concat(new Array(this.fftSize-realSamples.length).fill(0));
         const imag = new Float64Array(this.fftSize).fill(0);
         this.fft(real, imag);
 
         const scaleFactor = Math.pow(this.fftSize, 2);
         const powerSpectrum = real.slice(0, this.numPosBins).map((el, idx) => (Math.pow(el, 2) + Math.pow(imag[idx], 2)) / scaleFactor);
-        const dBSpectrum = powerSpectrum.map(s => 10*Math.log10(Math.max(s, 1e-12)));
+        return powerSpectrum;
+    }
+
+    dBSpectrum(realSamples) {
+        const dBSpectrum = this.powerSpectrum(realSamples).map(s => 10*Math.log10(Math.max(s, 1e-12)));
         return dBSpectrum;
+    }
+
+    magnitudeSpectrum(realSamples) {
+        const magnitudeSpectrum = this.powerSpectrum(realSamples).map(s => Math.sqrt(s));
+        return magnitudeSpectrum;
     }
 
     rfftFreqs(samplerate) {
