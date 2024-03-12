@@ -1,2 +1,2 @@
-disiple>=0.7.1
+disiple>=0.7.2
 
