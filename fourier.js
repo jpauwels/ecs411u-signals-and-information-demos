@@ -10,6 +10,10 @@
  */
 "use strict";
 
+function nextpow2(num) {
+    return 2**Math.ceil(Math.log2(Math.abs(num)));
+}
+
 class Fourier {
 
     /* 
