@@ -37,3 +37,16 @@ function amplitudeDemodulation(samples, ampCarr) {
 	const envSamples = fourier.envelope(samples);
     return envSamples.map((t) => t - ampCarr);
 }
+
+function cumSum(values) {
+    return values.map((sum => value => sum += value)(0));
+}
+
+function frequencyModulation(samples, freqMsg, modIdx, ampCarr, freqCarr, samplerate) {
+    const cumSamples = cumSum(samples);
+    return cumSamples.map((cumSample, idx) => ampCarr * Math.cos((2*Math.PI*freqCarr*idx + modIdx * 2*Math.PI*freqMsg*cumSample) / samplerate));
+}
+
+function phaseModulation(samples, modIdx, ampCarr, freqCarr, samplerate) {
+    return samples.map((sample, idx) => ampCarr * Math.cos(2*Math.PI*freqCarr*idx/samplerate + modIdx * sample));
+}
